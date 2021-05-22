@@ -1,2 +1,6 @@
 lib
 __pycache__/
+/tmp/*.jpg
+/tmp/*.jpeg
+/tmp/*.png
+/tmp/*.gif

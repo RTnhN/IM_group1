@@ -8,8 +8,6 @@
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
 body {font-size:16px;}
-.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
-.w3-half img:hover{opacity:1}
 </style>
 <body>
 
@@ -46,7 +44,7 @@ body {font-size:16px;}
     <h1 class="w3-jumbo"><b>2018 Data Science Bowl</b></h1>
     <h1 class="w3-xlarge w3-opacity">Find the nuclei in divergent images to advance medical discovery</h1>
     
-    <h1 class="w3-xxxlarge w3-text-red"><b>Introduction.</b></h1>
+    <h1 class="w3-xxxlarge w3-text-red"><b>Introduction</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
 
   </div>
@@ -54,44 +52,44 @@ body {font-size:16px;}
 
   <!-- Services -->
   <div class="w3-container" id="Background" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Background.</b></h1>
+    <h1 class="w3-xxxlarge w3-text-red"><b>Background</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
-    <div class = "w3-col s8">
+    <div class = "w3-col s7">
       <p>Pathological quantitative analysis is of great significance to the classification 
         of benign and malignant breast cancer, prostate cancer, lung cancer and other benign and malignant diagnosis.
         Among them, tissue primitive morphology and target measurement are important basis for pathological quantitative analysis.
       </p>
     </div>
-    <div class = "w3-col s4">
-      <img src="{{url_for('static', filename='Nuclei.png')}}" style="width:100%" onclick="onClick(this)" alt="Image discribing Nuclei(give better name)">
+    <div class = "w3-col s5">
+      <img src="{{url_for('static', filename='Nuclei.png')}}" style="width:100%;cursor:pointer" onclick="onClick(this)" alt="Image discribing Nuclei">
     </div>
     
   </div>
   
 
   <div class="w3-container" id="Methods" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Methods.</b></h1>
+    <h1 class="w3-xxxlarge w3-text-red"><b>Methods</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
     <p>Filler text</p>
   </div>
 
 
   <div class="w3-container" id="Results" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Results.</b></h1>
+    <h1 class="w3-xxxlarge w3-text-red"><b>Results</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
     <p>Filler text</p>
   </div>  
 
 
   <div class="w3-container" id="Live-App" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Live-App.</b></h1>
+    <h1 class="w3-xxxlarge w3-text-red"><b>Live-App</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
-    <p> To test the alorithm, you can upload an image. The algorithm will then return the image with all of the nuclei highlighted.
+    <p> To test the alorithm, you can upload an image. The type must be .png, .jpg, .jpeg, or .gif. The algorithm will then return the image with all of the nuclei highlighted.
     {{ my_string|safe }}
   </div>
 
   <div class="w3-container" id="Team" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Team.</b></h1>
+    <h1 class="w3-xxxlarge w3-text-red"><b>Team</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
     <p>This project was completed by Group 1 from Industrial Maintenance class Spring 2021.</p>
     <p><b>The team is composed of the following people</b>:</p>
@@ -172,6 +170,9 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
+{% if scroll %}
+    document.location.hash = '#' + '{{ scroll }}';
+{% endif %}
 </script>
 
 </body>

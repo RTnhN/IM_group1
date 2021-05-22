@@ -39,36 +39,43 @@ def uploaded_file(filename):
 
 @app.route("/", methods=['GET', 'POST'])
 def startingpoint():
+    fileError = ""
+    scroll = ""
     if request.method =="POST":
         if 'file' not in request.files:
-            return redirect("/#Live-App")
+            fileError = "<p>Please upload a file before hitting Submit</p>"
+            scroll = "Live-App"
         file = request.files['file']
         if file.filename == '':
-            return redirect("/#Live-App")
+            fileError = "<p>Please upload a file before hitting Submit</p>"
+            scroll = "Live-App"
+        if not allowed_file(file.filename):
+            fileError = "<p>Please upload a file with only one of the allowed types (.png, .jpg, .jpeg, .gif)</p>"
+            scroll = "Live-App"    
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(app.config['UPLOAD_FOLDER'] + "/" +filename)
             return redirect(url_for('processed',
-                                    filename=filename)+ "#Live-App")
+                                    filename=filename))
         
-    name1 ='''<form method=post enctype=multipart/form-data> 
+    name1 = fileError + '''<form method=post enctype=multipart/form-data> 
               <input type=file name=file> 
               <input type=submit value=Upload>
               </form>'''
-    return render_template("template.html", my_string = name1)
+    return render_template("template.html", my_string = name1, scroll=scroll)
 
-@app.route('/processed/<filename>#Live-App', methods=['GET', 'POST'])
+@app.route('/processed/<filename>', methods=['GET', 'POST'])
 def processed(filename):
     path = app.config['UPLOAD_FOLDER'] + "/" + filename
-    name_here = '''
-    <a href="/#Live-App" class="w3-button w3-red">Upload another image</a>
+    html_snippet = '''
+    <p><a href="/#Live-App" class="w3-button w3-red">Upload another image</a></p>
     <div class="w3-row-padding">
         <div class="w3-half">
-            <img src="/tmp/'''+ filename + '''" alt="Original Image" onclick="onClick(this)" style="width:100%"> 
+            <img src="/tmp/'''+ filename + '''" alt="Original Image" onclick="onClick(this)" style="width:100%;cursor:pointer"> 
                 <p> This is the original image uploaded. </p>
         </div>
         <div class="w3-half">
-            <img src="/tmp/'''+ filename + '''" alt="Image with marked nuclei" onclick="onClick(this)" style="width:100%">
+            <img src="/tmp/'''+ filename + '''" alt="Image with marked nuclei" onclick="onClick(this)" style="width:100%;cursor:pointer">
             <div class="w3-display-container">
                 <p> This is the image with the marked nuclei (if any)
             </div>
@@ -76,5 +83,5 @@ def processed(filename):
     </div>
 
     '''
-    return render_template("template.html", my_string = name_here)   
+    return render_template("template.html", my_string = html_snippet, scroll="Live-App")   
 
