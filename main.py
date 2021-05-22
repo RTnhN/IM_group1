@@ -26,7 +26,7 @@ else:
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 # 5MB limit for image upload
+app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024 # 7MB limit for image upload
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -41,34 +41,40 @@ def uploaded_file(filename):
 def startingpoint():
     if request.method =="POST":
         if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
+            return redirect("/#Live-App")
         file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
         if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+            return redirect("/#Live-App")
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(app.config['UPLOAD_FOLDER'] + "/" +filename)
             return redirect(url_for('processed',
-                                    filename=filename))
+                                    filename=filename)+ "#Live-App")
         
-    name1 ='<form method=post enctype=multipart/form-data> <input type=file name=file> <input type=submit value=Upload></form>'
+    name1 ='''<form method=post enctype=multipart/form-data> 
+              <input type=file name=file> 
+              <input type=submit value=Upload>
+              </form>'''
     return render_template("template.html", my_string = name1)
 
-@app.route('/processed/<filename>', methods=['GET', 'POST'])
+@app.route('/processed/<filename>#Live-App', methods=['GET', 'POST'])
 def processed(filename):
-    
-    name_here = '''<img src="/tmp/'''+ filename + '''" alt="test" onclick="onClick(this)" style="width:50%"> '''
+    path = app.config['UPLOAD_FOLDER'] + "/" + filename
+    name_here = '''
+    <a href="/#Live-App" class="w3-button w3-red">Upload another image</a>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <img src="/tmp/'''+ filename + '''" alt="Original Image" onclick="onClick(this)" style="width:100%"> 
+                <p> This is the original image uploaded. </p>
+        </div>
+        <div class="w3-half">
+            <img src="/tmp/'''+ filename + '''" alt="Image with marked nuclei" onclick="onClick(this)" style="width:100%">
+            <div class="w3-display-container">
+                <p> This is the image with the marked nuclei (if any)
+            </div>
+        </div>
+    </div>
+
+    '''
     return render_template("template.html", my_string = name_here)   
 
-
-    
-
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     return app.send_static_file("index.html")
-# [END app]
