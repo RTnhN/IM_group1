@@ -16,6 +16,7 @@
 import os
 from flask import Flask, jsonify, render_template,redirect,flash, request, url_for, send_from_directory
 from werkzeug.utils import secure_filename
+from algorithm import algorithm
 
 WEB_APP = False
 if WEB_APP: 
@@ -66,6 +67,7 @@ def startingpoint():
 
 @app.route('/processed/<filename>', methods=['GET', 'POST'])
 def processed(filename):
+    processedFilename = algorithm(filename)
     path = app.config['UPLOAD_FOLDER'] + "/" + filename
     html_snippet = '''
     <p><a href="/#Live-App" class="w3-button w3-red">Upload another image</a></p>
@@ -75,7 +77,7 @@ def processed(filename):
                 <p> This is the original image uploaded. </p>
         </div>
         <div class="w3-half">
-            <img src="/tmp/'''+ filename + '''" alt="Image with marked nuclei" onclick="onClick(this)" style="width:100%;cursor:pointer">
+            <img src="/tmp/'''+ processedFilename + '''" alt="Image with marked nuclei" onclick="onClick(this)" style="width:100%;cursor:pointer">
             <div class="w3-display-container">
                 <p> This is the image with the marked nuclei (if any)
             </div>

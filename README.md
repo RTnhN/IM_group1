@@ -28,4 +28,6 @@ When it runs, you should see an ip address that you can access the server from.
 
 Make sure that in "main.py" that the code `WEB_APP` is set to `False`.
 
-The webapp might be running. If it is, you can find it at http://imsp21g1.online/. As of Fri 21-May-21 05:24 PM, the app just puts the uploaded picture in the webpage. More work will be done for the page.
+~~The webapp might be running.If it is, you can find it at http://imsp21g1.online/.  As of Fri 21-May-21 05:24 PM, the app just puts the uploaded picture in the webpage. More work will be done for the page.~~
+
+I found out that the website does not cost any money since it has so few users, so it will just continuously be running. You can find it anytime at http://imsp21g1.online/. 
