@@ -11,7 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# Use this code to launch the app in the google cloud: 
+# gcloud app deploy app.yaml
+# 
+# Use this code to launch the app in local development: 
+# set FLASK_APP=main.py 
+# set FLASK_ENV=development this turns on debug mode that updates the server instance each time the code is updated
+# flask run or python -m flask run
 # [START app]
 import os
 from flask import Flask, jsonify, render_template,redirect,flash, request, url_for, send_from_directory
