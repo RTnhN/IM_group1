@@ -1,19 +1,3 @@
-# Copyright 2016 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# Use this code to launch the app in the google cloud: 
-# gcloud app deploy app.yaml
-# 
 # Use this code to launch the app in local development: 
 # set FLASK_APP=main.py 
 # set FLASK_ENV=development this turns on debug mode that updates the server instance each time the code is updated
