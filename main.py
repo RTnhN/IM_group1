@@ -36,8 +36,9 @@ VERIFY_URL = "https://hcaptcha.com/siteverify"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__, instance_relative_config=True)
 
-WEB_APP = False
-if WEB_APP:
+WEBAPP = True
+
+if WEBAPP:
     app.config.from_pyfile("configWebApp.py")
 else:
     app.config.from_pyfile("config.py")
@@ -118,3 +119,6 @@ def verify():
     logging.info("This is the responce from hcaptcha: "+str(r))
     logging.info("This is the json: "+ str(r.json()))
     return r.json()["success"] if r.status_code == 200 else False
+
+
+
