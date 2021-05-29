@@ -10,6 +10,8 @@ from flask import Flask, jsonify, render_template,redirect,flash, request, url_f
 from werkzeug.utils import secure_filename
 from algorithm import algorithm
 import requests
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import logging
 import google.cloud.logging
 client = google.cloud.logging.Client()
@@ -19,6 +21,11 @@ client.setup_logging()
 VERIFY_URL = "https://hcaptcha.com/siteverify"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__, instance_relative_config=True)
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
 
 WEB_APP = False
 if WEB_APP:
@@ -60,7 +67,7 @@ def startingpoint():
         else:
             fileError = "<p>There was a problem with the captcha, please try again</p>"
             scroll = "Live-App"
-        
+
     name1 = fileError + '''<form method=post enctype=multipart/form-data>
               <div class="h-captcha" data-sitekey="2380b2b1-0209-4631-8c8f-1432f6528777"></div>
               <input type=file name=file> 
@@ -70,8 +77,7 @@ def startingpoint():
 
 @app.route('/processed/<filename>', methods=['GET', 'POST'])
 def processed(filename):
-    processedFilename = algorithm(filename)
-    path = app.config['UPLOAD_FOLDER'] + "/" + filename
+    processedFilename = algorithm(app.config['UPLOAD_FOLDER'],filename)
     html_snippet = '''
     <p><a href="/#Live-App" class="w3-button w3-red">Upload another image</a></p>
     <div class="w3-row-padding">
@@ -96,9 +102,29 @@ def verify():
         "response": request.form.get('h-captcha-response'),
         "remoteip": request.environ.get('REMOTE_ADDR')
     }
-
     r = requests.post(VERIFY_URL, data=data)
-
     logging.info("This is the responce from hcaptcha: "+str(r))
     logging.info("This is the json: "+ str(r.json()))
     return r.json()["success"] if r.status_code == 200 else False
+
+@app.route('/API', methods=['POST'])
+@limiter.limit("40/day;10/hour")
+def API():
+    if 'file' not in request.files:
+        data= {"error": "No File Sent"}
+        return data, 405
+
+    file = request.files['file']
+    if file.filename == '':
+        data= {"error": "filename parameter blank"}
+        return data, 406
+    if not allowed_file(file.filename):
+        data= {"error": "filename parameter blank"}
+        return data, 406
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(app.config['UPLOAD_FOLDER'] + "/" + filename)
+        processedFilename = algorithm(app.config['UPLOAD_FOLDER'],filename)
+        processedFileURL = app.config['UPLOAD_FOLDER'] + "/" + processedFilename
+        data = {"processedFile": processedFileURL}
+        return data, 200
