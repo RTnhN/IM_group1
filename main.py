@@ -6,9 +6,9 @@
 # gcloud app deploy app.yaml
 # [START app]
 import os
-from flask import Flask, jsonify, render_template,redirect,flash, request, url_for, send_from_directory
+from flask import Flask, render_template,redirect, request, url_for, send_from_directory
 from werkzeug.utils import secure_filename
-from algorithm import algorithm
+from process_image import process_image
 import requests
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -39,7 +39,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/tmp/<filename>')
-def uploaded_file(filename):
+def upload(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
@@ -50,14 +50,14 @@ def startingpoint():
     if request.method =="POST":
         if not app.config['RECAPTCHA_ENABLED'] or verify() :
             if 'file' not in request.files:
-                fileError = "<p>Please upload a file before hitting Submit</p>"
+                fileError = "Please upload a file before hitting Submit"
                 scroll = "Live-App"
             file = request.files['file']
             if file.filename == '':
-                fileError = "<p>Please upload a file before hitting Submit</p>"
+                fileError = "Please upload a file before hitting Submit"
                 scroll = "Live-App"
             if not allowed_file(file.filename):
-                fileError = "<p>Please upload a file with only one of the allowed types (.png, .jpg, .jpeg, .gif)</p>"
+                fileError = "Please upload a file with only one of the allowed types (.png, .jpg, .jpeg, .gif)"
                 scroll = "Live-App"    
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
@@ -65,36 +65,15 @@ def startingpoint():
                 return redirect(url_for('processed',
                                         filename=filename))
         else:
-            fileError = "<p>There was a problem with the captcha, please try again</p>"
+            fileError = "There was a problem with the captcha, please try again"
             scroll = "Live-App"
 
-    name1 = fileError + '''<form method=post enctype=multipart/form-data>
-              <div class="h-captcha" data-sitekey="2380b2b1-0209-4631-8c8f-1432f6528777"></div>
-              <input type=file name=file> 
-              <input type=submit value=Upload>
-              </form>'''
-    return render_template("template.html", my_string = name1, scroll=scroll)
+    return render_template("basetemplate.html", error = fileError,  scroll=scroll)
 
 @app.route('/processed/<filename>', methods=['GET', 'POST'])
 def processed(filename):
-    processedFilename = algorithm(app.config['UPLOAD_FOLDER'],filename)
-    html_snippet = '''
-    <p><a href="/#Live-App" class="w3-button w3-red">Upload another image</a></p>
-    <div class="w3-row-padding">
-        <div class="w3-half">
-            <img src="/tmp/'''+ filename + '''" alt="Original Image" onclick="onClick(this)" style="width:100%;cursor:pointer"> 
-                <p> This is the original image uploaded. </p>
-        </div>
-        <div class="w3-half">
-            <img src="/tmp/'''+ processedFilename + '''" alt="Image with marked nuclei" onclick="onClick(this)" style="width:100%;cursor:pointer">
-            <div class="w3-display-container">
-                <p> This is the image with the marked nuclei (if any)
-            </div>
-        </div>
-    </div>
-
-    '''
-    return render_template("template.html", my_string = html_snippet, scroll="Live-App")   
+    processedFilename = process_image(app.config['UPLOAD_FOLDER'], filename)
+    return render_template("Results.html", processed = processedFilename, unprocessed = filename, scroll="Live-App")   
 
 def verify():
     data = {
@@ -123,8 +102,8 @@ def API():
         return data, 406
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(app.config['UPLOAD_FOLDER'] + "/" + filename)
-        processedFilename = algorithm(app.config['UPLOAD_FOLDER'],filename)
-        processedFileURL = app.config['UPLOAD_FOLDER'] + "/" + processedFilename
-        data = {"processedFile": processedFileURL}
+        path = app.config['UPLOAD_FOLDER'] + "/" + filename
+        file.save(path)
+        processedPath = process_image(path)
+        data = {"processedFile": processedPath}
         return data, 200
