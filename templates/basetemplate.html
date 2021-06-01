@@ -124,7 +124,16 @@ img.center {
     <h1 class="w3-xxxlarge w3-text-red"><b>Live-App</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
     <p> To test the alorithm, you can upload an image. The type must be .png, .jpg, .jpeg, or .gif. The algorithm will then return the image with all of the nuclei highlighted.
-      {{ my_string|safe }}
+      
+      {% block app %}
+      <p>{{ error }}</p>
+      <form method=post enctype=multipart/form-data>
+        <div class="h-captcha" data-sitekey="2380b2b1-0209-4631-8c8f-1432f6528777"></div>
+        <input type=file name=file> 
+        <input type=submit value=Upload>
+        </form>
+      {% endblock  %}
+      
   </div>
 
   <div class="w3-container" id="Team" style="margin-top:75px">

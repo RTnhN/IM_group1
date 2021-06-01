@@ -1,0 +1,16 @@
+{% extends "basetemplate.html" %}
+{% block app %}
+<p><a href="/#Live-App" class="w3-button w3-red">Upload another image</a></p>
+<div class="w3-row-padding">
+    <div class="w3-half">
+        <img src={{ url_for("upload", filename = unprocessed ) }} alt="Original Image" onclick="onClick(this)" style="width:100%;cursor:pointer"> 
+            <p> This is the original image uploaded. </p>
+    </div>
+    <div class="w3-half">
+        <img src= {{ url_for("upload", filename = processed ) }} alt="Image with marked nuclei" onclick="onClick(this)" style="width:100%;cursor:pointer">
+        <div class="w3-display-container">
+            <p> This is the image with the nuclei marked in green
+        </div>
+    </div>
+</div>
+{% endblock %}
