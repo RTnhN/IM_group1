@@ -27,7 +27,7 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"]
 )
 
-WEB_APP = False
+WEB_APP = True
 if WEB_APP:
     app.config.from_pyfile("configWebApp.py")
 else:
@@ -104,6 +104,6 @@ def API():
         filename = secure_filename(file.filename)
         path = app.config['UPLOAD_FOLDER'] + "/" + filename
         file.save(path)
-        processedPath = process_image(path)
-        data = {"processedFile": processedPath}
+        processedFilename = process_image(app.config['UPLOAD_FOLDER'], filename)
+        data = {"processedFile": app.config['UPLOAD_FOLDER'] + "/" + processedFilename}
         return data, 200
