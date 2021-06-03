@@ -1,3 +1,4 @@
 RECAPTCHA_ENABLED = False
 UPLOAD_FOLDER = "tmp"
 MAX_CONTENT_LENGTH = 7 * 1024 * 1024
+STORAGE_BUCKET = "woven-grail-197804.appspot.com"

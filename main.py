@@ -6,7 +6,7 @@
 # gcloud app deploy app.yaml
 # [START app]
 import os
-from flask import Flask, render_template,redirect, request, url_for, send_from_directory
+from flask import Flask, render_template,redirect, request, url_for, send_from_directory,send_file
 from werkzeug.utils import secure_filename
 from process_image import process_image
 import requests
@@ -15,8 +15,10 @@ from flask_limiter.util import get_remote_address
 import logging
 import google.cloud.logging
 client = google.cloud.logging.Client()
+from google.cloud import storage
 client.get_default_handler()
 client.setup_logging()
+import tempfile
 
 VERIFY_URL = "https://hcaptcha.com/siteverify"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -27,7 +29,7 @@ limiter = Limiter(
     default_limits=["1000 per day", "200 per hour"]
 )
 
-WEB_APP = True
+WEB_APP = False
 if WEB_APP:
     app.config.from_pyfile("configWebApp.py")
 else:
@@ -41,8 +43,8 @@ def allowed_file(filename):
 @app.route('/tmp/<filename>')
 @limiter.exempt
 def upload(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
+    return send_file(GoogleFileHandler(filename,"original", "download"), attachment_filename=filename)
+
 
 @app.route("/", methods=['GET', 'POST'])
 def startingpoint():
@@ -62,9 +64,11 @@ def startingpoint():
                 scroll = "Live-App"    
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                file.save(app.config['UPLOAD_FOLDER'] + "/" +filename)
-                return redirect(url_for('processed',
-                                        filename=filename))
+                with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+                    file.save(tmpfile.name)
+                    GoogleFileHandler(filename,"original", "upload")
+                    return redirect(url_for('processed',
+                                            filename=filename))
         else:
             fileError = "There was a problem with the captcha, please try again"
             scroll = "Live-App"
@@ -108,3 +112,21 @@ def API():
         processedFilename = process_image(app.config['UPLOAD_FOLDER'], filename)
         data = {"processedFile": app.config['UPLOAD_FOLDER'] + "/" + processedFilename}
         return data, 200
+
+
+def GoogleFileHandler(filename,type, op):
+    client = storage.Client()
+    bucket = client.get_bucket(app.config['STORAGE_BUCKET'])
+    if type == "original":
+        subfolder = "upload/"
+    elif type == "processed":
+        subfolder = "processed/"
+
+    blob = bucket.blob(subfolder+filename) 
+    if op == "download":
+        with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+            blob.download_to_filename(tmpfile.name)
+            return tmpfile.name
+    if op == "upload":
+        blob.upload_from_filename(filename)
+        return
