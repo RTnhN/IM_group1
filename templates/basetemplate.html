@@ -23,9 +23,9 @@ img.center {
     <h3 class="w3-padding-64"> <a href="/" style="text-decoration: none;"><b>Group 1 <br>Industrial Maintenance</b></a></h3>
   </div>
   <div class="w3-bar-block">
-    <a href="#Introduction" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Introduction</a> 
-    <a href="#Background" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Background</a> 
-    <a href="#Methods" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Methods</a> 
+    <a href="#Introduction" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Introduction</a>
+    <a href="#Methods" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Methods</a>
+    <a href="#Dataset Analysis" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Dataset Analysis</a>
     <a href="#Results" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Results</a> 
     <a href="#Live-App" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Live App</a> 
     <a href="#Team" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Team</a>
@@ -53,37 +53,16 @@ img.center {
     <hr style="width:50px;border:5px solid red" class="w3-round">
     <div>
       <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum viverra gravida congue. Curabitur molestie nunc sit amet pulvinar congue. Nunc lacus massa, interdum sit amet finibus et, faucibus at quam. In sodales, justo et aliquam vulputate, nunc odio vulputate quam, fermentum ultrices dolor diam pharetra ex. Sed egestas consequat sagittis. Cras luctus lacus sem, et consequat orci porta vel. Mauris eu tellus interdum, pharetra quam nec, interdum est. Aliquam ultrices tortor elit, in dictum diam dictum sed. Morbi nulla enim, finibus eget lectus dapibus, rhoncus gravida mauris. Donec vel magna tellus. Vestibulum et sapien non ipsum luctus dapibus. Vivamus rutrum posuere orci.
+          In each human's body, there are about 30 trillion cells. Most of those cells contain a nucleus full of DNA, the genetic code that programs their forms. Identifying the nuclei of the cells is essential and generally is the first step for most analyses in digital pathology. Because of the morphological distinction of nuclei and the different staining methods of pathological slices, finding an efficient detection method for nuclei is not easy. Though difficulties block the roads, an indispensable method for spotting of the nuclei may promote researchers to identify each individual cell clearly in a tissue sample. In addition, by measuring the reaction of the cells to a specific treatment, the researchers can explore the underlying biological processes at work, such as the quantity or size. Most importantly, with the coming of the big data era and due to the lack of pathologists, countless pathological images bring tremendous workload to medical researchers and clinicians. So finding a suitable automated detection method or nucleus instance segmentation method is necessary. Recently, computer-aided diagnosis system is a promising solution for pathology.
       </p>
-      <p>
-      Aenean vitae leo dui. Quisque mollis lorem in lacus efficitur dapibus. Morbi eu velit vulputate, sagittis est sit amet, fringilla sem. Duis vel convallis tortor. Integer rutrum sodales arcu, a mattis lectus luctus eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis consequat imperdiet volutpat. In facilisis justo non sapien ullamcorper, in tincidunt lacus scelerisque. 
-      </p>
-      <p>
-      Cras vel eros volutpat, malesuada sapien a, pretium orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris ipsum nunc, vestibulum in rhoncus at, cursus eu elit. Phasellus aliquet eros nibh. Duis facilisis ornare fringilla. Pellentesque eget varius velit, vel ullamcorper nulla. Nullam nunc ligula, ullamcorper sed quam sed, dictum ullamcorper ipsum. 
-      </p>
+    </div>
+      <div>
+      <img class ="center" src="{{url_for('static', filename='Nuclei.png')}}" style="width:50%;cursor:pointer;margin:auto;" onclick="onClick(this)" alt="Image discribing Nuclei">
+      <p class="center"> Importance of Nuclei Detection  </p>
     </div>
   </div>
 
-  <div class="w3-container" id="Background" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Background</b></h1>
-    <hr style="width:50px;border:5px solid red" class="w3-round">
-    <div>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum viverra gravida congue. Curabitur molestie nunc sit amet pulvinar congue. Nunc lacus massa, interdum sit amet finibus et, faucibus at quam. In sodales, justo et aliquam vulputate, nunc odio vulputate quam, fermentum ultrices dolor diam pharetra ex. Sed egestas consequat sagittis. Cras luctus lacus sem, et consequat orci porta vel. Mauris eu tellus interdum, pharetra quam nec, interdum est. Aliquam ultrices tortor elit, in dictum diam dictum sed. Morbi nulla enim, finibus eget lectus dapibus, rhoncus gravida mauris. Donec vel magna tellus. Vestibulum et sapien non ipsum luctus dapibus. Vivamus rutrum posuere orci.
-        </p>
-        <p>
-        Aenean vitae leo dui. Quisque mollis lorem in lacus efficitur dapibus. Morbi eu velit vulputate, sagittis est sit amet, fringilla sem. Duis vel convallis tortor. Integer rutrum sodales arcu, a mattis lectus luctus eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis consequat imperdiet volutpat. In facilisis justo non sapien ullamcorper, in tincidunt lacus scelerisque. 
-        </p>
-        <p>
-        Cras vel eros volutpat, malesuada sapien a, pretium orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris ipsum nunc, vestibulum in rhoncus at, cursus eu elit. Phasellus aliquet eros nibh. Duis facilisis ornare fringilla. Pellentesque eget varius velit, vel ullamcorper nulla. Nullam nunc ligula, ullamcorper sed quam sed, dictum ullamcorper ipsum. 
-        </p>
-    </div>
-    <div>
-      <img class ="center" src="{{url_for('static', filename='Nuclei.png')}}" style="width:50%;cursor:pointer;margin:auto;" onclick="onClick(this)" alt="Image discribing Nuclei">
-      <p class="center"> caption for image  </p>
-    </div>
-    
-  </div>
+
   
 
   <div class="w3-container" id="Methods" style="margin-top:75px">
@@ -91,15 +70,50 @@ img.center {
     <hr style="width:50px;border:5px solid red" class="w3-round">
     <div>
       <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum viverra gravida congue. Curabitur molestie nunc sit amet pulvinar congue. Nunc lacus massa, interdum sit amet finibus et, faucibus at quam. In sodales, justo et aliquam vulputate, nunc odio vulputate quam, fermentum ultrices dolor diam pharetra ex. Sed egestas consequat sagittis. Cras luctus lacus sem, et consequat orci porta vel. Mauris eu tellus interdum, pharetra quam nec, interdum est. Aliquam ultrices tortor elit, in dictum diam dictum sed. Morbi nulla enim, finibus eget lectus dapibus, rhoncus gravida mauris. Donec vel magna tellus. Vestibulum et sapien non ipsum luctus dapibus. Vivamus rutrum posuere orci.
+      Researches about nucleus detection or segmentation are extensive and in-depth. Most of these methods are explored with respect to traditional image processing techniques such as watershed, thresholding, sliding window, active contours, and pixel clustering.
       </p>
+        <h2>Traditional Image Processing Techniques</h2>
       <p>
-      Aenean vitae leo dui. Quisque mollis lorem in lacus efficitur dapibus. Morbi eu velit vulputate, sagittis est sit amet, fringilla sem. Duis vel convallis tortor. Integer rutrum sodales arcu, a mattis lectus luctus eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis consequat imperdiet volutpat. In facilisis justo non sapien ullamcorper, in tincidunt lacus scelerisque. 
+       Recently, computer-aided diagnosis system is a promising solution for pathology. Researches about nucleus detection or segmentation are extensive and in-depth. Most of these methods are explored with respect to traditional image processing techniques such as watershed, thresholding, sliding window, active contours, and pixel clustering. Zhou et al. have used the adaptive thresholding and watershed algorithm, combining with a fragment merging method for cell nuclei segmentation. Law et al. have designed a semi-supervised optimization model suitable for segmentation and robust to new data without labels. Veta et al. have applied a multi-scale marker controlled watershed segmentation method. A hybrid approach that combines interactive learning, morphological processing, and object level feature classification has been used to detect nuclei. Lu et al. have raised a hybrid morphological reconstruction module, and through this approach, the intensity variation has been reduced and the noise suppressed. Then a local optimal threshold module has been used to segment the nuclei. Kwak et al. have proposed a method based on gradient orientation information and linear least squares regression for detection.
       </p>
+        <p>
+            Though all the methods reviewed above yield satisfactory results, almost all of them have limitations. Also, because of the difficulties in gaining biomedical images data, the sizes of these datasets are relatively small and on account of the same source, the nuclei in these images are almost at the similar sizes. These may lead models to overfit to their specific data. By the way, hand-crafted features have been widely used in nearly all the methods, and this must restrain the robustness of the models in theory. For instance, due to the singular staining method, the distribution of the dataset in each of the literature is simple and the backgrounds of images in the same dataset are similar to each other.
+        </p>
+        <h2>Deep Learning Techniques</h2>
       <p>
-      Cras vel eros volutpat, malesuada sapien a, pretium orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris ipsum nunc, vestibulum in rhoncus at, cursus eu elit. Phasellus aliquet eros nibh. Duis facilisis ornare fringilla. Pellentesque eget varius velit, vel ullamcorper nulla. Nullam nunc ligula, ullamcorper sed quam sed, dictum ullamcorper ipsum. 
+       With the dramatical development in deep learning, models based on deep convolutional neural networks occupy the mainstream of the biomedical image analysis. Compared with the feature-driven methods originated from traditional machine learning ideology, the thought of data-driven shows superiority gradually. U-net is the most famous encoder-decoder architecture which specifically designed for biomedical image segmentation. Wollmann et al. have adapted the deep transfer learning network based on multi-channel and atrous spatial pyramid pooling to segment nuclei in glioblastoma cells. Garcia et al. have presented a deep learning detection method through sliding windows and non-maximum suppression. By using this model, they can effectively detect the lymphocyte on Gastric Cancer IHC Images. Deep convolutional neural networks have been used for automatic classification of gastric carcinoma on whole slide images. In this research, pathological slides have been cropped to image patches. Through prediction/classification of the patches, the whole slides have got the probability of positive or negative at each location, then this issue can be recognized as a segmentation task identifying positive areas and negative areas. Hung et al. have applied the state-of-the-art Faster R-CNN object detection architecture to detect cells in malaria images. After making a general survey of the deep learning approaches mentioned above, we could find that deep learning is suitable for more complex tasks. But there are also drawbacks in these researches. Some networks are lightweight, thus they can only solve problems with tiny datasets. U-net has been firstly adapted on the dataset of ISBI cell tracking challenge 2015, in which there are only 30 images for training and 30 for testing. Although the data have been augmented before been fed to the network. In this project, using the dataset from 2018 Data Science Bowl, aiming at finding the nuclei in divergent images to advance medical discovery.
       </p>
     </div>
+  </div>
+
+  <div class="w3-container" id="Dataset Analysis" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Dataset Analysis</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <div>
+      <p>
+          1.There are 670 nuclei images in the training set, 65 in test set 2, and 3019 images in test set 2.
+        </p>
+        <p>
+            2.Each nuclei image has a unique ID.
+        </p>
+        <p>
+            3.The data set includes grayscale images and RGB images.
+        </p>
+        <p>
+            4.One image corresponds to more than one masks.
+        </p>
+        <p>
+            5.Different pictures have different resolutions.
+        </p>
+        <p>
+            6.The training set contains the original image of nuclei and the mask image of the individual nucleus after segmentation.
+        </p>
+    </div>
+    <div>
+      <img class ="center" src="{{url_for('static', filename='Dataset.png')}}" style="width:50%;cursor:pointer;margin:auto;" onclick="onClick(this)" alt="Image discribing Dataset">
+      <p class="center"> Grayscale images and RGB images of Dataset </p>
+    </div>
+
   </div>
 
 
@@ -107,15 +121,28 @@ img.center {
     <h1 class="w3-xxxlarge w3-text-red"><b>Results</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
     <div>
+        <h2>Algorithm: U-Net</h2>
       <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum viverra gravida congue. Curabitur molestie nunc sit amet pulvinar congue. Nunc lacus massa, interdum sit amet finibus et, faucibus at quam. In sodales, justo et aliquam vulputate, nunc odio vulputate quam, fermentum ultrices dolor diam pharetra ex. Sed egestas consequat sagittis. Cras luctus lacus sem, et consequat orci porta vel. Mauris eu tellus interdum, pharetra quam nec, interdum est. Aliquam ultrices tortor elit, in dictum diam dictum sed. Morbi nulla enim, finibus eget lectus dapibus, rhoncus gravida mauris. Donec vel magna tellus. Vestibulum et sapien non ipsum luctus dapibus. Vivamus rutrum posuere orci.
+          U-Net was published in MICCAI 2015. It is an improved version of FCN (Fully Convolutional Network). It contains contracting path and expanding path that are mutually symmetric, and forms a U-shaped structure. Contracting path is used for context information extraction and expanding path is used for localization.
+      </p>
+        <h2>Model Training</h2>
+      <p>
+          Loss function: Binary cross entropy loss.
       </p>
       <p>
-      Aenean vitae leo dui. Quisque mollis lorem in lacus efficitur dapibus. Morbi eu velit vulputate, sagittis est sit amet, fringilla sem. Duis vel convallis tortor. Integer rutrum sodales arcu, a mattis lectus luctus eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis consequat imperdiet volutpat. In facilisis justo non sapien ullamcorper, in tincidunt lacus scelerisque. 
+            Optimizer: AdamOptimizer
       </p>
+      <h2>Performance</h2>
       <p>
-      Cras vel eros volutpat, malesuada sapien a, pretium orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris ipsum nunc, vestibulum in rhoncus at, cursus eu elit. Phasellus aliquet eros nibh. Duis facilisis ornare fringilla. Pellentesque eget varius velit, vel ullamcorper nulla. Nullam nunc ligula, ullamcorper sed quam sed, dictum ullamcorper ipsum. 
+         Loss ≈ 0.0729.
       </p>
+        <p>
+            The model basically converges after 30 epochs.
+        </p>
+    </div>
+      <div>
+      <img class ="center" src="{{url_for('static', filename='Results.png')}}" style="width:50%;cursor:pointer;margin:auto;" onclick="onClick(this)" alt="Image discribing Results">
+      <p class="center"> Results </p>
     </div>
   </div>  
 
