@@ -19,3 +19,6 @@ __pycache__/
 /setup.cfg
 *.h5    
 /networkTrain
+/tmp/*.jpg
+/tmp/*.png
+/tmp/*.gif

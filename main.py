@@ -27,7 +27,7 @@ limiter = Limiter(
     default_limits=["1000 per day", "200 per hour"]
 )
 
-WEB_APP = True
+WEB_APP = False
 if WEB_APP:
     app.config.from_pyfile("configWebApp.py")
 else:

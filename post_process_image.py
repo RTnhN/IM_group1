@@ -1,8 +1,14 @@
 import numpy as np
 import scipy.ndimage as ndi
+from skimage.color.colorconv import gray2rgb
 from skimage.measure import regionprops
-from skimage.morphology import label
+from skimage.morphology import label,binary_dilation
+from skimage.io import imread
+from skimage import img_as_bool, img_as_float, img_as_ubyte
 import cv2
+from skimage.feature import canny
+import matplotlib.pyplot as plt 
+from mpl_toolkits.axes_grid1 import ImageGrid
 
 def post_processing(mask):
     mask = np.squeeze(mask * 255).astype(np.uint8)
@@ -99,3 +105,25 @@ def split_mask_v1(mask):
 
                     cv2.line(thresh, p1, nearest, [0, 0, 0], 2)
     return thresh
+
+def colorize_image(mask, img):
+    # avg_color = np.array([img[:,:,0].mean(), img[:,:,1].mean(), img[:,:,2].mean()])
+    colorized = img[:,:,:3]
+    iterations = 2
+    edges = canny(mask)
+    for i in range(iterations):
+        edges = binary_dilation(edges)
+    edges = edges*np.invert(mask)
+    edges_with_center = edges|mask
+    not_edges_with_center = np.invert(edges_with_center)
+    nuclei_i = img_as_float(np.multiply(img_as_bool(gray2rgb(mask)),colorized))
+    edges_i = img_as_float(np.multiply(img_as_bool(gray2rgb(edges)),colorized))
+    edges_i = img_as_float(gray2rgb(edges))*255
+    not_nuclei_i = img_as_float(np.multiply(img_as_bool(gray2rgb(not_edges_with_center)),colorized))
+    colorized = [1,1,1]*nuclei_i + [0,1,0]*edges_i + not_nuclei_i
+    return colorized.astype(np.uint8)
+
+
+
+
+    
