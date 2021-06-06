@@ -99,7 +99,7 @@ def API():
         data= {"error": "filename parameter blank"}
         return data, 406
     if not allowed_file(file.filename):
-        data= {"error": "filename parameter blank"}
+        data= {"error": "File Type Not Allowed"}
         return data, 406
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)

@@ -1,7 +1,6 @@
 from skimage.io import imread
 import matplotlib.pyplot as plt
 import requests
-import base64
 
 dir = "tmp/"
 filename = "test1.jpg"
