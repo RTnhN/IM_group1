@@ -117,5 +117,12 @@ def API():
 
 @app.errorhandler(404)
 def handle_404(e):
-    # handle all other routes here
+    app.logger.exception(e)
     return redirect(url_for("startingpoint"))
+
+@app.errorhandler(FileNotFoundError)
+def missing_file(e):
+    app.logger.exception(e)
+    fileError = "There was a problem with the uploaded image file, please try uploading it again."
+    scroll = "Live-App"
+    return render_template("basetemplate.html", error = fileError,  scroll=scroll)
