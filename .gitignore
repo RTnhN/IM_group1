@@ -6,6 +6,6 @@ __pycache__/
 /tmp/*.gif
 /instance/configWebApp.py
 .vscode
-/*.h5
+*.h5
 unet
 unet++

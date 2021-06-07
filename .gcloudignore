@@ -21,3 +21,4 @@ __pycache__/
 /tmp/*.jpg
 /tmp/*.png
 /tmp/*.gif
+*.h5
