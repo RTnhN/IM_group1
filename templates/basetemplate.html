@@ -162,6 +162,11 @@ img.center {
         <div class="h-captcha" data-sitekey="2380b2b1-0209-4631-8c8f-1432f6528777"></div>
         <input type=file name=file> 
         <input type=submit value=Upload>
+        &nbsp; &nbsp; Model Type:
+        <input type="radio" id="oldm" name="model" value="old" checked>
+        <label for="oldm">UNet</label>
+        <input type="radio" id="newm" name="model" value="new">
+        <label for="newm">UNet++</label>
         </form>
       {% endblock  %}
       

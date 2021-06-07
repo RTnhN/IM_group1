@@ -5,7 +5,8 @@ python=3.5.2
 """
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Input, BatchNormalization,Dropout, Lambda,Conv2D, Conv2DTranspose, Convolution2D, MaxPooling2D,Concatenate
-from tensorflow.keras.backend import flatten, sum
+from tensorflow.keras import backend as K
+from tensorflow.keras.losses import binary_crossentropy
 
 smooth = 1.
 padding_type_contract = 'same'
@@ -14,10 +15,10 @@ padding_type_expand = 'same'
 # Metric function
 
 def dice_coef(y_true, y_pred):
-    y_true_f = flatten(y_true)
-    y_pred_f = flatten(y_pred)
-    intersection = sum(y_true_f * y_pred_f)
-    return (2. * intersection + smooth) / (sum(y_true_f) + sum(y_pred_f) + smooth)
+    y_true_f = K.flatten(y_true)
+    y_pred_f = K.flatten(y_pred)
+    intersection = K.sum(y_true_f * y_pred_f)
+    return (2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
 
 
 # Loss funtion
@@ -91,5 +92,28 @@ def get_unet(IMG_WIDTH=256, IMG_HEIGHT=256, IMG_CHANNELS=3):
     model = Model(inputs=inputs, outputs=outputs)
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=[dice_coef])
     return model
+
+def dice_loss(y_true, y_pred):
+    smooth = 1.
+    y_true = K.flatten(y_true)
+    y_pred = K.flatten(y_pred)
+    intersection = y_true * y_pred
+    score = (2. * K.sum(intersection) + smooth) / (K.sum(y_true) + K.sum(y_pred) + smooth)
+    return 1. - score
+
+def bce_dice_loss(y_true, y_pred):
+    return binary_crossentropy(y_true, y_pred) + dice_loss(y_true, y_pred)
+
+def iou(y_true, y_pred):
+    thresh = 0.5
+    smooth = 1.
+    y_true = K.flatten(y_true)
+    y_pred = K.flatten(y_pred)
+    y_true = K.cast(K.greater_equal(y_true, thresh), 'float32')
+    y_pred = K.cast(K.greater_equal(y_pred, thresh), 'float32')
+    intersection = K.sum(K.minimum(y_true, y_pred)) + smooth
+    union = K.sum(K.maximum(y_true, y_pred)) + smooth
+    iou = intersection/union
+    return iou
 
 

@@ -8,7 +8,7 @@ python=3.5.2
 from skimage.io import imsave
 import numpy as np
 from skimage.transform import resize
-from model import dice_coef
+from model import dice_loss, bce_dice_loss, iou, dice_coef
 from read_one_image import read_one_image
 from post_process_image import post_processing, colorize_image
 from tensorflow.keras.models import  load_model
@@ -27,11 +27,15 @@ from tensorflow.keras.models import  load_model
 #     pass
 # os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-def process_image(folder,filename):
+def process_image(folder,filename, model):
     test_img, test_img_sizes = read_one_image(folder + "/" + filename)
     # model_name = 'model-0522-test.h5'
     # get u_net model
-    u_net = load_model("mymodel", custom_objects={"dice_coef": dice_coef})
+    if model == "old":
+        u_net = load_model("mymodel", custom_objects={"dice_coef": dice_coef})
+    elif model == "new":    
+        u_net = load_model("model_unet++.h5", custom_objects={'bce_dice_loss': bce_dice_loss, 'iou': iou})
+
     # u_net.load_weights(model_name)
 
     # Predict on test data

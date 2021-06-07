@@ -61,19 +61,20 @@ def startingpoint():
                 fileError = "Please upload a file with only one of the allowed types (.png, .jpg, .jpeg, .gif)"
                 scroll = "Live-App"    
             if file and allowed_file(file.filename):
+                model = request.form["model"]
                 filename = secure_filename(file.filename)
                 file.save(app.config['UPLOAD_FOLDER'] + "/" +filename)
                 return redirect(url_for('processed',
-                                        filename=filename))
+                                      model=model, filename=filename))
         else:
             fileError = "There was a problem with the captcha, please try again"
             scroll = "Live-App"
 
     return render_template("basetemplate.html", error = fileError,  scroll=scroll)
 
-@app.route('/processed/<filename>', methods=['GET', 'POST'])
-def processed(filename):
-    processedFilename = process_image(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/processed/<model>/<filename>', methods=['GET', 'POST'])
+def processed(model, filename):
+    processedFilename = process_image(app.config['UPLOAD_FOLDER'], filename, model)
     return render_template("Results.html", processed = processedFilename, unprocessed = filename, scroll="Live-App")   
 
 def verify():
@@ -108,3 +109,8 @@ def API():
         processedFilename = process_image(app.config['UPLOAD_FOLDER'], filename)
         data = {"processedFile": app.config['UPLOAD_FOLDER'] + "/" + processedFilename}
         return data, 200
+
+@app.errorhandler(404)
+def handle_404(e):
+    # handle all other routes here
+    return redirect(url_for("startingpoint"))

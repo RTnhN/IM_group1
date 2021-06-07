@@ -16,8 +16,7 @@
 # Python pycache:
 __pycache__/
 # Ignored by the build system
-/setup.cfg
-*.h5    
+/setup.cfg   
 /networkTrain
 /tmp/*.jpg
 /tmp/*.png
