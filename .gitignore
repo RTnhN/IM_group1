@@ -7,3 +7,5 @@ __pycache__/
 /instance/configWebApp.py
 .vscode
 /*.h5
+unet
+unet++
