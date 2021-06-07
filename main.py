@@ -15,6 +15,7 @@ from flask_limiter.util import get_remote_address
 import logging
 import google.cloud.logging
 client = google.cloud.logging.Client()
+import json
 client.get_default_handler()
 client.setup_logging()
 
@@ -26,7 +27,7 @@ limiter = Limiter(
     key_func=get_remote_address,
     default_limits=["1000 per day", "200 per hour"]
 )
-
+models = ["unet", "unetpp"]
 WEB_APP = False
 if WEB_APP:
     app.config.from_pyfile("configWebApp.py")
@@ -91,10 +92,10 @@ def verify():
 @app.route('/API', methods=['POST'])
 @limiter.limit("40/day;10/hour")
 def API():
+    print(json.loads(request.form["json"])["model"])
     if 'file' not in request.files:
         data= {"error": "No File Sent"}
         return data, 405
-
     file = request.files['file']
     if file.filename == '':
         data= {"error": "filename parameter blank"}
@@ -102,11 +103,15 @@ def API():
     if not allowed_file(file.filename):
         data= {"error": "File Type Not Allowed"}
         return data, 406
+    if 'json' not in request.form or json.loads(request.form["json"])["model"] not in models:
+        data = {"error": "Model type not included. Please add model type of either unet or unetpp."}
+        return data, 406
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         path = app.config['UPLOAD_FOLDER'] + "/" + filename
         file.save(path)
-        processedFilename = process_image(app.config['UPLOAD_FOLDER'], filename)
+        model = json.loads(request.form["json"])["model"]
+        processedFilename = process_image(app.config['UPLOAD_FOLDER'], filename, model)
         data = {"processedFile": app.config['UPLOAD_FOLDER'] + "/" + processedFilename}
         return data, 200
 

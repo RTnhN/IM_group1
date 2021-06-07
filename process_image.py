@@ -31,10 +31,10 @@ def process_image(folder,filename, model):
     test_img, test_img_sizes = read_one_image(folder + "/" + filename)
     # model_name = 'model-0522-test.h5'
     # get u_net model
-    if model == "old":
-        u_net = load_model("mymodel", custom_objects={"dice_coef": dice_coef})
-    elif model == "new":    
-        u_net = load_model("model_unet++.h5", custom_objects={'bce_dice_loss': bce_dice_loss, 'iou': iou})
+    if model == "unet":
+        u_net = load_model("unet", custom_objects={"dice_coef": dice_coef})
+    elif model == "unetpp":    
+        u_net = load_model("unet++", custom_objects={'bce_dice_loss': bce_dice_loss, 'iou': iou})
 
     # u_net.load_weights(model_name)
 

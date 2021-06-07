@@ -1,7 +1,7 @@
 from skimage.io import imread
 import matplotlib.pyplot as plt
 import requests
-
+import json
 dir = "tmp/"
 filename = "test1.jpg"
 
@@ -19,7 +19,10 @@ baseURL = "http://www.imsp21g1.online"
 
 url = baseURL + "/" + API_path
 
-files = {"file": (filename,imgData)}
+model = {"model":"unet"}
+
+files = {"json":(None, json.dumps(model)),  "file": (filename,imgData)}
+
 
 r = requests.post(url,files=files)
 
