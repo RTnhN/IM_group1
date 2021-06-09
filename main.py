@@ -27,7 +27,7 @@ limiter = Limiter(
     key_func=get_remote_address,
     default_limits=["1000 per day", "200 per hour"]
 )
-models = ["unet", "unetpp"]
+models = ["unet", "unetpp", "fcn"]
 WEB_APP = False
 if WEB_APP:
     app.config.from_pyfile("configWebApp.py")

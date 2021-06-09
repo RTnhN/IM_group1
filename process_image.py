@@ -12,6 +12,12 @@ from model import dice_loss, bce_dice_loss, iou, dice_coef
 from read_one_image import read_one_image
 from post_process_image import post_processing, colorize_image
 from tensorflow.keras.models import  load_model
+import tensorflow as tf
+
+
+# This code is required if I want tensorflow to use the GPU
+physical_devices = tf.config.list_physical_devices('GPU') 
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 # This code below is added to keep tensorflow from using GPU
 # import tensorflow as tf
@@ -29,17 +35,17 @@ from tensorflow.keras.models import  load_model
 
 def process_image(folder,filename, model):
     test_img, test_img_sizes = read_one_image(folder + "/" + filename)
-    # model_name = 'model-0522-test.h5'
     # get u_net model
     if model == "unet":
-        u_net = load_model("unet", custom_objects={"dice_coef": dice_coef})
+        predict_model = load_model("models/unet", custom_objects={"dice_coef": dice_coef})
     elif model == "unetpp":    
-        u_net = load_model("unet++", custom_objects={'bce_dice_loss': bce_dice_loss, 'iou': iou})
+        predict_model = load_model("models/unet++", custom_objects={'bce_dice_loss': bce_dice_loss, 'iou': iou})
+    elif model == "fcn":    
+        predict_model = load_model("models/FCN", custom_objects={"dice_coef": dice_coef})
 
-    # u_net.load_weights(model_name)
 
     # Predict on test data
-    test_mask = u_net(test_img, training=False)
+    test_mask = predict_model(test_img, training=False)
     test_mask = np.array(test_mask)
     test_mask = test_mask[0,:,:,:]
     test_img = test_img[0,:,:,:]
