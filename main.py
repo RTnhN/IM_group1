@@ -12,6 +12,7 @@ import requests
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import json
+import os
 
 app = Flask(__name__, instance_relative_config=True)
 limiter = Limiter(app, key_func=get_remote_address, default_limits=["1000 per day", "200 per hour"])
@@ -112,10 +113,14 @@ def API():
         data = {"processed_file": app.config['UPLOAD_FOLDER'] + "/" + processed_filename}
         return data, 200
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
+
 @app.errorhandler(404)
 def handle_404(e):
     app.logger.exception(e)
-    return redirect(url_for("startingpoint"))
+    return redirect(url_for("home_route"))
 
 @app.errorhandler(FileNotFoundError)
 def missing_file(e):
