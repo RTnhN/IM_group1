@@ -64,7 +64,6 @@ def split_mask_v1(mask):
             points = []
             dd = []
 
-            #
             # In this loop we gather all defect points
             # so that they can be filtered later on.
             for i in range(defects.shape[0]):
@@ -102,22 +101,20 @@ def split_mask_v1(mask):
                     cv2.line(thresh, p1, nearest, [0, 0, 0], 2)
     return thresh
 
-def colorize_image(mask, img):
-    # avg_color = np.array([img[:,:,0].mean(), img[:,:,1].mean(), img[:,:,2].mean()])
-    colorized = img[:,:,:3]
-    img_width = img.shape[0]
-    iterations = int(round(2*img_width/255))
-    edges = canny(mask)
+def colorize_image(mask, image):
+    colorized = image[:,:,:3]
+    image_width = image.shape[0]
+    iterations = int(round(2*image_width/255))
+    mask_edges = canny(mask)
     for i in range(iterations):
-        edges = binary_dilation(edges)
-    edges = edges*np.invert(mask)
-    edges_with_center = edges|mask
-    not_edges_with_center = np.invert(edges_with_center)
-    nuclei_i = img_as_float(np.multiply(img_as_bool(gray2rgb(mask)),colorized))
-    edges_i = img_as_float(np.multiply(img_as_bool(gray2rgb(edges)),colorized))
-    edges_i = img_as_float(gray2rgb(edges))*255
-    not_nuclei_i = img_as_float(np.multiply(img_as_bool(gray2rgb(not_edges_with_center)),colorized))
-    colorized = [1,1,1]*nuclei_i + [0,1,0]*edges_i + [.5,.5,.5]*not_nuclei_i
+        mask_edges = binary_dilation(mask_edges)
+    mask_edges = mask_edges*np.invert(mask)
+    mask_edges_and_nuclei = mask_edges|mask
+    background = np.invert(mask_edges_and_nuclei)
+    image_nuclei = img_as_float(np.multiply(img_as_bool(gray2rgb(mask)),colorized))
+    image_edges = img_as_float(gray2rgb(mask_edges))*255
+    image_background = img_as_float(np.multiply(img_as_bool(gray2rgb(background)),colorized))
+    colorized = [1,1,1]*image_nuclei + [0,1,0]*image_edges + [.5,.5,.5]*image_background
     return colorized.astype(np.uint8)
 
 
