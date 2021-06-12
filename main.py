@@ -25,7 +25,7 @@ MODELS = ["unet", "unetpp", "fcn", "gan"]
 # regular use, it is okay just to use config.py. By using config.py, no 
 # captcha is needed when running the app. 
 
-WEB_APP = True
+WEB_APP = False
 if WEB_APP:
     app.config.from_pyfile("configWebApp.py")
 else:
@@ -72,7 +72,7 @@ def home_route():
             scroll = "Live-App"
     return render_template("basetemplate.html", error = error_text,  scroll=scroll)
 
-@app.route('/processed/<model>/<filename>', methods=['GET', 'POST'])
+@app.route('/processed/<model>/<filename>', methods=['GET'])
 def processed(model, filename):
     processed_filename = process_image(app.config['UPLOAD_FOLDER'], filename, model)
     return render_template("Results.html", processed = processed_filename, unprocessed = filename, scroll="Live-App")   

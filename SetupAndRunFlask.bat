@@ -1,20 +1,20 @@
 @echo off
 
-REM This will download all the needed models 
-IF not exist %cd%\FCN\NUL GOTO prompta
-IF not exist %cd%\unet\NUL GOTO prompta
-IF not exist %cd%\unet++\NUL GOTO prompta
-GOTO promptb
+@REM REM This will download all the needed models 
+@REM IF not exist %cd%\FCN\NUL GOTO prompta
+@REM IF not exist %cd%\unet\NUL GOTO prompta
+@REM IF not exist %cd%\unet++\NUL GOTO prompta
+@REM GOTO promptb
 
-:prompta
-setlocal
-SET /P AREYOUSURE1="The models are not downloaded. Would you like to download them and include them in the directory?(y/n)"
-IF /I "%AREYOUSURE1%" NEQ "y" GOTO RUNFLASK
-endlocal
+@REM :prompta
+@REM setlocal
+@REM SET /P AREYOUSURE1="The models are not downloaded. Would you like to download them and include them in the directory?(y/n)"
+@REM IF /I "%AREYOUSURE1%" NEQ "y" GOTO RUNFLASK
+@REM endlocal
 
-:DOWNLOADMODELS
-bitsadmin /transfer downloadmodels "https://thisbucketholdsthemodelsforimsp21g1.s3-ap-northeast-1.amazonaws.com/models.zip" %cd%\models.zip
-powershell Expand-Archive models.zip
+@REM :DOWNLOADMODELS
+@REM bitsadmin /transfer downloadmodels "https://thisbucketholdsthemodelsforimsp21g1.s3-ap-northeast-1.amazonaws.com/models.zip" %cd%\models.zip
+@REM powershell Expand-Archive models.zip
 
 :promptb
 setlocal

@@ -102,7 +102,7 @@ def split_mask_v1(mask):
     return thresh
 
 def colorize_image(mask, image):
-    colorized = image[:,:,:3]
+    colorized = image
     image_width = image.shape[0]
     iterations = int(round(2*image_width/255))
     mask_edges = canny(mask)

@@ -1,0 +1,1 @@
+This folder is just for code that was used to train the models and miscellaneous code. While parts of this code was adapted for the actual application, it is not directly used.  
