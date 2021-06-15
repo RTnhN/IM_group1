@@ -7,7 +7,7 @@
 
 from flask import Flask, render_template,redirect, request, url_for, send_from_directory
 from werkzeug.utils import secure_filename
-from process_image import process_image
+from process_image import predict
 import requests
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -40,6 +40,11 @@ if app.config["LOG"]:
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Mode can either be "mem_save" or "time_save". "mem_save" loads the models into 
+# memory only when needed while "time_save" loads all the models into memory at the 
+# start so that prediction is faster
+process_instance = predict(mode="time_save")
 
 @app.route('/tmp/<filename>')
 @limiter.exempt
@@ -74,7 +79,7 @@ def home_route():
 
 @app.route('/processed/<model>/<filename>', methods=['GET'])
 def processed(model, filename):
-    processed_filename = process_image(app.config['UPLOAD_FOLDER'], filename, model)
+    processed_filename = process_instance.process_image(app.config['UPLOAD_FOLDER'], filename, model)
     return render_template("Results.html", processed = processed_filename, unprocessed = filename, scroll="Live-App")   
 
 def verify():
@@ -109,7 +114,7 @@ def API():
         path = app.config['UPLOAD_FOLDER'] + "/" + filename
         file.save(path)
         model = json.loads(request.form["json"])["model"]
-        processed_filename = process_image(app.config['UPLOAD_FOLDER'], filename, model)
+        processed_filename = process_instance.process_image(app.config['UPLOAD_FOLDER'], filename, model)
         data = {"processed_file": app.config['UPLOAD_FOLDER'] + "/" + processed_filename}
         return data, 200
 

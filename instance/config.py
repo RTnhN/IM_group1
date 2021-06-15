@@ -3,3 +3,4 @@ UPLOAD_FOLDER = "tmp"
 MAX_CONTENT_LENGTH = 7 * 1024 * 1024
 LOG = False
 VERIFY_URL = "https://hcaptcha.com/siteverify"
+PROPAGATE_EXCEPTIONS = True 

@@ -155,7 +155,14 @@ img.center {
   <div class="w3-container" id="Live-App" style="margin-top:75px">
     <h1 class="w3-xxxlarge w3-text-red"><b>Live-App</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
-    <p> To test the alorithm, you can upload an image. The type must be .png, .jpg, .jpeg, or .gif. The algorithm will then return the image with all of the nuclei highlighted.
+    <p> To test the algorithm, you can upload an image. The type must be .png, .jpg, .jpeg, or .gif. 
+      The algorithm will then return the image with all of the nuclei highlighted. 
+      If you need test images to use, you can download the following images then upload them:
+      <a href= "{{url_for('static', filename='test1.jpg')}}">test1.jpg</a>
+      <a href= "{{url_for('static', filename='test2.jpg')}}">test2.jpg</a>
+      <a href= "{{url_for('static', filename='test3.jpg')}}">test3.jpg</a>
+      <a href= "{{url_for('static', filename='test4.jpg')}}">test4.jpg</a>
+    </p>
       
       {% block app %}
       <p>{{ error }}</p>
